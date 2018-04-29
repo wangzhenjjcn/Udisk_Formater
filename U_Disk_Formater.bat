@@ -3,7 +3,7 @@ set filepath=%~dp0
 cd %filepath%
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"  
 if '%errorlevel%' NEQ '0' (  
-echo 请求管理员权限...  
+echo RequestAdminAccess...  
 goto UACPrompt  
 ) else ( goto gotAdmin )   
 :UACPrompt   
