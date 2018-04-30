@@ -34,10 +34,10 @@ def formartDisk(diskTag):
     tagoutput = os.popen(listDriverTags)
     listDriverTagsResault=tagoutput.read()
     if "格式化已完成".decode('utf-8').encode(sys.getfilesystemencoding()) in listDriverTagsResault:
-        print "格式化磁盘".decode('utf-8').encode(sys.getfilesystemencoding())+diskTag+"成功，可以拔出".decode('utf-8').encode(sys.getfilesystemencoding())
+        print "       格式化磁盘".decode('utf-8').encode(sys.getfilesystemencoding())+diskTag+"成功，可以拔出".decode('utf-8').encode(sys.getfilesystemencoding())
         return 1
     else:
-        print  "格式化磁盘".decode('utf-8').encode(sys.getfilesystemencoding())+diskTag+"失败，失败信息如下：".decode('utf-8').encode(sys.getfilesystemencoding())
+        print  "       格式化磁盘".decode('utf-8').encode(sys.getfilesystemencoding())+diskTag+"失败，失败信息如下：".decode('utf-8').encode(sys.getfilesystemencoding())
         print listDriverTagsResault
         return 0
     pass
@@ -54,7 +54,7 @@ def isUdisk(diskTag):
     global  diskpartInfo
     global  diskPatitonInfo
     global  diskType
-    print "正在检测是否为U盘，请稍候".decode('utf-8').encode(sys.getfilesystemencoding())
+    print "       正在检测是否为U盘，请稍候".decode('utf-8').encode(sys.getfilesystemencoding())
     readDriversType="fsutil fsinfo driveType "+diskTag+":"
     diskType=os.popen(readDriversType).read()
     drivers[diskTag]=diskType
@@ -125,7 +125,7 @@ def deleteDiskPartitions(diskTag):
     global  diskType
     readDiskPartitions(diskTag)
     if "这个磁盘上没有显示的分区".decode('utf-8').encode(sys.getfilesystemencoding()) in diskPatitonInfo[diskTag]:
-        print "没有检测到分区的存在，可能是新硬盘或者无分区" .decode('utf-8').encode(sys.getfilesystemencoding())
+        print ">>>>>>没有检测到分区的存在，可能是新硬盘或者无分区<<<<<<" .decode('utf-8').encode(sys.getfilesystemencoding())
         return 1
     num=0;
     diskPatitonInfos=diskPatitonInfo[diskTag].split("-")[len(diskPatitonInfo[diskTag].split("-"))-1]
@@ -157,7 +157,7 @@ def deleteDiskPartitions(diskTag):
                 deleteDiskPatitonResault=deleteDiskPatitonoutput.read()
                 os.remove("deleteDisk"+bytes(diskTag)+"Partition"+bytes(num)+".txt")
                 if "成功地删除了所选分区" .decode('utf-8').encode(sys.getfilesystemencoding()) in deleteDiskPatitonResault:
-                    print "成功地删除了" .decode('utf-8').encode(sys.getfilesystemencoding())+diskPatitonInfos[i]
+                    print ">>>>>>成功地删除了" .decode('utf-8').encode(sys.getfilesystemencoding())+diskPatitonInfos[i]
                 else:
                     print "====================删除失败======================="
                     print deleteDiskPatitonResault
@@ -185,14 +185,12 @@ def deleteDiskPartitions(diskTag):
                 deleteDiskPatitonoutput = os.popen(deleteDiskPatiton)
                 deleteDiskPatitonResault=deleteDiskPatitonoutput.read()
                 os.remove("deleteDisk"+bytes(diskTag)+"Partition"+bytes(num)+".txt")
-                print deleteDiskPatitonResault
                 if "成功地删除了所选分区" .decode('utf-8').encode(sys.getfilesystemencoding()) in deleteDiskPatitonResault:
-                    print "成功地删除了" .decode('utf-8').encode(sys.getfilesystemencoding())+diskPatitonInfos[j]
+                    print ">>>>>>成功地删除了" .decode('utf-8').encode(sys.getfilesystemencoding())+diskPatitonInfos[j]
                 else:
                     print "====================删除失败======================="
                     print deleteDiskPatitonResault
                     print diskPatitonInfos[j]
-                   
                     deleteDiskPartitions(diskTag)
             else:
                 msg= diskPatitonInfos[j]
@@ -210,7 +208,7 @@ def creatAndFormartDisk(diskTag):
     global  diskpartInfo
     global  diskPatitonInfo
     global  diskType
-    print "正在创建U盘分区，请稍候".decode('utf-8').encode(sys.getfilesystemencoding())
+    print ">>>>>>正在创建U盘分区，请稍候".decode('utf-8').encode(sys.getfilesystemencoding())
     num=0
     creatDiskPatiton_file=open("creatDisk"+bytes(diskTag)+"Partition.txt","a")
     creatDiskPatiton_file.close()  
@@ -223,9 +221,8 @@ def creatAndFormartDisk(diskTag):
     creatDiskPatitonoutput = os.popen(creatDiskPatiton)
     creatDiskPatitonResault=creatDiskPatitonoutput.read()
     os.remove("creatDisk"+bytes(diskTag)+"Partition.txt")
-    print creatDiskPatitonResault
     if "成功地创建了指定分区" .decode('utf-8').encode(sys.getfilesystemencoding()) in creatDiskPatitonResault:
-        print "成功地创建了指定分区" .decode('utf-8').encode(sys.getfilesystemencoding())
+        print ">>>>>>成功地创建了指定分区并格式化" .decode('utf-8').encode(sys.getfilesystemencoding())
     else:
         print creatDiskPatitonResault
  
@@ -255,9 +252,8 @@ def cleanAll(diskTag):
     deleteDiskPatitonoutput = os.popen(deleteDiskPatiton)
     deleteDiskPatitonResault=deleteDiskPatitonoutput.read()
     os.remove("deleteDisk"+bytes(diskTag)+".txt")
-    print deleteDiskPatitonResault
     if "成功地删除了所选分区" .decode('utf-8').encode(sys.getfilesystemencoding()) in deleteDiskPatitonResault:
-        print "成功地删除了" .decode('utf-8').encode(sys.getfilesystemencoding())
+        print ">>>>>>成功地删除了" .decode('utf-8').encode(sys.getfilesystemencoding())
     else:
         print deleteDiskPatitonResault
 
@@ -348,7 +344,7 @@ def checkNewDrivers():
             if lastDriverList[i] in driverList:
                 msg= "旧始驱动器：".decode('utf-8').encode(sys.getfilesystemencoding())+lastDriverList[i]
             else:
-                print "你移除了驱动器：".decode('utf-8').encode(sys.getfilesystemencoding())+lastDriverList[i]
+                print ">>>>>>你移除了驱动器：".decode('utf-8').encode(sys.getfilesystemencoding())+lastDriverList[i].strip("\n")
         time.sleep(1)
 
 
@@ -395,7 +391,7 @@ def checkNewDisks():
                 num=adiskInfo[1].strip(" ").strip("/n")
                 disks[num]=disksDiskInfo[i]
                 originalDiskList[num]=disksDiskInfo[i]
-    
+    print "------程序已经启动，数据无价谨慎操作！！！！等待驱动器连接>>>>>>".decode('utf-8').encode(sys.getfilesystemencoding()) 
     while(1):
         checkDisk()
         for key in disks.keys():
@@ -404,37 +400,41 @@ def checkNewDisks():
             else:
                 value=disks[key]
                 readDiskPartitions(key)
-                if bytes(key) in originalDiskList.keys() or int(key) in originalDiskList.keys():
-                    print "检测到原始硬盘，等待其他驱动器连接".decode('utf-8').encode(sys.getfilesystemencoding())
+                if (bytes(key) in originalDiskList.keys() or int(key) in originalDiskList.keys()) and disks[key]==originalDiskList[key] :
+                    print ">>>>>>检测到原始硬盘，等待其他驱动器连接".decode('utf-8').encode(sys.getfilesystemencoding())
                 else:
+                    if key==0 or key =="0":
+                        pass
+                        continue
+                    print ">>>>>>你插入了新的驱动器：".decode('utf-8').encode(sys.getfilesystemencoding())+disks[key].strip("\n")
+ 
                     if int(encodenum)==1:   
-                        print "开始删除...".decode('utf-8').encode(sys.getfilesystemencoding())
+                        print ">>>>>>开始删除...".decode('utf-8').encode(sys.getfilesystemencoding())
                         deleteDiskPartitions(key)
-                        print "开始创建新分区...".decode('utf-8').encode(sys.getfilesystemencoding())
+                        print ">>>>>>开始创建新分区...".decode('utf-8').encode(sys.getfilesystemencoding())
                         creatAndFormartDisk(key)
-                        print "操作完成，可以移除当前驱动器".decode('utf-8').encode(sys.getfilesystemencoding())+key
+                        print "======操作完成，可以移除当前驱动器或者插入新的驱动器进行格式化操作\n\n\n".decode('utf-8').encode(sys.getfilesystemencoding())
                     elif int(encodenum)==2:
-                        print "开始删除...".decode('utf-8').encode(sys.getfilesystemencoding())
+                        print ">>>>>>开始删除...".decode('utf-8').encode(sys.getfilesystemencoding())
                         deleteDiskPartitions(key)
-                        print "开始创建新分区...".decode('utf-8').encode(sys.getfilesystemencoding())
+                        print ">>>>>>开始创建新分区...".decode('utf-8').encode(sys.getfilesystemencoding())
                         creatAndFormartDisk(key)
-                        print "操作完成，可以移除当前驱动器".decode('utf-8').encode(sys.getfilesystemencoding())+key
+                        print "======操作完成，可以移除当前驱动器或者插入新的驱动器进行格式化操作\n\n\n".decode('utf-8').encode(sys.getfilesystemencoding())
                     elif int(encodenum)==3:
-                        print "开始删除...".decode('utf-8').encode(sys.getfilesystemencoding())
+                        print ">>>>>>开始删除...".decode('utf-8').encode(sys.getfilesystemencoding())
                         deleteDiskPartitions(key)
-                        print "操作完成，可以移除当前驱动器".decode('utf-8').encode(sys.getfilesystemencoding())+key                   
+                        print "======操作完成，可以移除当前驱动器或者插入新的驱动器进行格式化操作\n\n\n".decode('utf-8').encode(sys.getfilesystemencoding())         
                     else:
-                        print "无操作，可以移除当前驱动器".decode('utf-8').encode(sys.getfilesystemencoding())+key
+                        pass
         for key in lastDisks.keys():
             if key in disks.keys():
                 msg=""
             else:
                 value=lastDisks[key]
-                print "你移除了硬盘：".decode('utf-8').encode(sys.getfilesystemencoding())
-                print  value
-        print "操作完成，你可以继续插入新的驱动器进行格式化操作\n\n\n".decode('utf-8').encode(sys.getfilesystemencoding())
+                print ">>>>>>你移除了驱动器：".decode('utf-8').encode(sys.getfilesystemencoding())+value.strip("\n")
+    
+        
         time.sleep(1)
-
     
 
 print ""                                                                       
@@ -462,20 +462,18 @@ print ""
 print "数据无价谨慎操作！！！！！！！！此程序享有管理员权限，运行此程序数据丢失概不负责！！".decode('utf-8').encode(sys.getfilesystemencoding())
 print ""  
 while  int(encodenum)>4 or int(encodenum)<1 :
-    print "将要删除硬盘所有分区并默认使用FAT32格式化所有空间".decode('utf-8').encode(sys.getfilesystemencoding())
-    print "如果你要其他格式请输入以下对应数字，否则默认Fat32".decode('utf-8').encode(sys.getfilesystemencoding()) 
-    print "删除所有分区并以NTFS格式化分区请输入【1】".decode('utf-8').encode(sys.getfilesystemencoding()) 
-    print "删除所有分区并以Fat32格式化分区请输入【2】".decode('utf-8').encode(sys.getfilesystemencoding()) 
-    print "删除所有分区不格式化请输入【3】".decode('utf-8').encode(sys.getfilesystemencoding()) 
-    print "不删除仅以FAT32格式化请输入【4】".decode('utf-8').encode(sys.getfilesystemencoding()) 
-    print "不删除仅以NTFS格式化请输入【5】".decode('utf-8').encode(sys.getfilesystemencoding()) 
+    print ">>>>>>请输入以下对应数字选择程序功能：".decode('utf-8').encode(sys.getfilesystemencoding()) 
+    print "      删除所有分区并以NTFS格式化分区请输入【1】".decode('utf-8').encode(sys.getfilesystemencoding()) 
+    print "      删除所有分区并以Fat32格式化分区请输入【2】".decode('utf-8').encode(sys.getfilesystemencoding()) 
+    print "      删除所有分区不格式化请输入【3】".decode('utf-8').encode(sys.getfilesystemencoding()) 
+    print "      不删除仅以FAT32格式化请输入【4】".decode('utf-8').encode(sys.getfilesystemencoding()) 
+    print "      不删除仅以NTFS格式化请输入【5】".decode('utf-8').encode(sys.getfilesystemencoding()) 
     encodenum=raw_input("现在请输入对应数字或者回车，取消请直接关闭！\n".decode('utf-8').encode(sys.getfilesystemencoding()))
     pass
-print "开始运行，等待驱动器连接.....".decode('utf-8').encode(sys.getfilesystemencoding()) 
+print "！！！！！！数据无价谨慎操作！！！！！！！！程序正在启动！！！！请等待>>>>>>".decode('utf-8').encode(sys.getfilesystemencoding())
 time.sleep(1)
 checkDisk()
 time.sleep(1)
-print "数据无价谨慎操作！！！！！！！！程序已启动！！！！".decode('utf-8').encode(sys.getfilesystemencoding())
 if int(encodenum)==1:
     diskType="NTFS"
     checkNewDisks()
@@ -496,4 +494,5 @@ else:
 print "数据无价谨慎操作！！！！！！！！程序已退出！！！！".decode('utf-8').encode(sys.getfilesystemencoding())
 sys.exit(0)
 
+ 
  
